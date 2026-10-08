@@ -4,7 +4,6 @@ import { fetchEntries, fetchToday, fetchStats } from "./lib/api";
 import { parseFilterState, serializeFilterState, toggleInList, DEFAULT_FILTERS } from "./lib/filters";
 
 let filters: FilterState = parseFilterState(new URL(window.location.href));
-let allEntries: FoodEntry[] = [];
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
@@ -215,7 +214,6 @@ function update(): void {
 async function load(): Promise<void> {
   try {
     const [entries, todayData] = await Promise.all([fetchEntries(filters), fetchToday()]);
-    allEntries = entries;
     renderMonths(entries);
     renderBanner(filters.q || filters.region.length || filters.category.length ? null : todayData.next);
   } catch (err) {
