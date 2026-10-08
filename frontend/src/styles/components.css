@@ -48,6 +48,7 @@
   cursor: pointer; transition: transform 0.15s, border-color 0.15s, background 0.15s;
   border-left: 3px solid var(--gray);
   position: relative; overflow: hidden; text-align: left; width: 100%;
+  color: var(--text);
 }
 .event-card:hover { transform: translateX(2px); border-color: var(--surface3); background: var(--surface2); }
 .event-card:active { transform: scale(0.99); }
