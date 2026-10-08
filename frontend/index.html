@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Kalendarz Dni Jedzenia — światowe i polskie święta kulinarne</title>
+  <meta name="description" content="Kalendarz wszystkich ważnych dni jedzenia na świecie i w Polsce. Filtruj po dacie, regionie, kategorii i popularności.">
+  <link rel="stylesheet" href="/src/styles/tokens.css">
+  <link rel="stylesheet" href="/src/styles/base.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+</head>
+<body>
+  <header id="app-header">
+    <div class="header-logo">FOOD<span>CALENDAR</span></div>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input id="search-input" type="search" placeholder="Szukaj dnia jedzenia..." autocomplete="off">
+      <button id="search-clear" class="search-clear" aria-label="Wyczyść wyszukiwanie">✕</button>
+    </div>
+    <button id="today-btn" class="header-today-btn">Dziś</button>
+  </header>
+
+  <div id="main-layout">
+    <aside id="sidebar">
+      <div class="sidebar-section" id="region-filters">
+        <h3>Region</h3>
+      </div>
+      <div class="sidebar-section" id="category-filters">
+        <h3>Kategoria</h3>
+      </div>
+      <div class="sidebar-section">
+        <h3>Miesiące</h3>
+        <nav class="month-nav-list" id="month-nav"></nav>
+      </div>
+    </aside>
+
+    <main id="content">
+      <div id="next-event-banner" hidden>
+        <div class="banner-icon" id="banner-icon">🍽️</div>
+        <div>
+          <div class="banner-label">Najbliższe święto</div>
+          <div class="banner-name" id="banner-name"></div>
+          <div class="banner-sub" id="banner-sub"></div>
+        </div>
+        <div class="banner-countdown">
+          <div class="banner-days" id="banner-days"></div>
+          <div class="banner-days-label">dni</div>
+        </div>
+      </div>
+      <div id="months-container"></div>
+      <div id="empty-state" hidden>
+        <p>Brak wyników dla wybranych filtrów.</p>
+      </div>
+    </main>
+  </div>
+
+  <nav id="bottom-nav">
+    <button class="bn-item active" data-view="calendar">📅 Kalendarz</button>
+    <button class="bn-item" data-view="filters">🎚️ Filtry</button>
+    <button class="bn-item" data-view="today">⭐ Dziś</button>
+  </nav>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-sheet" role="dialog" aria-modal="true" id="modal-sheet"></div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
