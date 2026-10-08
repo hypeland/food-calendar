@@ -1,22 +1,18 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { cache } from "hono/cache";
 import { entriesRoute } from "./routes/entries";
 import { statsRoute } from "./routes/stats";
 import { feedRoute } from "./routes/feed";
 
 export interface Env {
   DB: D1Database;
-  MEDIA: R2Bucket;
-  CORS_ORIGIN: string;
+  MEDIA?: R2Bucket;
 }
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.use("*", async (c, next) => {
-  const origin = c.env.CORS_ORIGIN || undefined;
-  return cors({ origin })(c, next);
-});
+// Public read-only API: allow all origins for GET
+app.use("/api/*", cors({ origin: "*" }));
 
 app.get("/health", (c) => c.text("ok"));
 

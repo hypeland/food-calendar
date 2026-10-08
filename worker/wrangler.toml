@@ -5,17 +5,15 @@ compatibility_date = "2026-09-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "food-calendar-db"
-database_id = "REPLACE_AFTER_CREATE"
+database_id = "36b74ab0-431f-494e-b7fc-8d6dafe8fa22"
 
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "food-calendar-media"
+# R2 binding — enable R2 on the account (dashboard, one-time), then uncomment:
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "food-calendar-media"
 
 [observability]
 enabled = true
-
-[vars]
-CORS_ORIGIN = ""
 
 # Cache API responses at the edge
 [triggers]
