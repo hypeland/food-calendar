@@ -207,7 +207,9 @@ document.addEventListener("keydown", (e) => {
 
 function update(): void {
   const qs = serializeFilterState(filters);
-  window.history.replaceState(null, "", qs ? `/?${qs}` : "/");
+  // Preserve the base path (e.g. /food-calendar/ on GitHub Pages)
+  const basePath = window.location.pathname.replace(/\/[^/]*$/, "") || "/";
+  window.history.replaceState(null, "", qs ? `${basePath}?${qs}` : basePath);
   void load();
 }
 
