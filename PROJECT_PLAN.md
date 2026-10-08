@@ -85,15 +85,15 @@ The reference is a single-file static HTML app. We replicate its **design langua
 
 ### 3.2 Component Responsibilities
 
-| Layer | Cloudflare product | Responsibility |
+| Layer | Product / tool | Responsibility |
 |---|---|---|
-| Frontend hosting | **Pages** (user-requested) | Static SPA: HTML/CSS/JS bundle, preview deployments per PR. *Note: Cloudflare now recommends Workers + Static Assets for new projects; decision point in §3.6.* |
-| Serverless functions | **Workers** | REST API: query/filter/sort entries; popularity aggregation; ics feed generation; health endpoint. |
+| Frontend hosting | **GitHub Pages** (https://hypeland.github.io/food-calendar/) | Static SPA: HTML/CSS/JS bundle, deployed via GitHub Actions on merge to `main`. Same model as the reference repo (peaklabengine.github.io). Cloudflare CDN still fronts the site via DNS proxy if a custom domain is added later. |
+| Serverless functions | **Cloudflare Workers** | REST API: query/filter/sort entries; popularity aggregation; ics feed generation; health endpoint. |
 | Relational data | **D1** | Entries table (dates, names PL/EN, region, category, popularity, sources, slug), categories, regions. SQL filtering is a natural fit for the 4-dimension query model. |
 | Media assets | **R2** | Food-day images (hero + thumbnails), served via custom domain `media.foodcalendar.pl` (or `/cdn-cgi/...` route) with long-lived cache headers; zero egress fees. |
 | Caching | **Cloudflare CDN + Workers Cache** | Cache API responses at edge (`Cache-Control: public, s-maxage=86400, stale-while-revalidate`); static assets immutable with content-hash filenames. |
 | Observability | Workers Logs + Web Analytics | Error tracking, RUM performance, traffic by region. |
-| CI/CD | GitHub Actions + Wrangler | Test → build → deploy (Pages + Worker + D1 migrations) on merge to `main`; preview deployments on PRs. |
+| CI/CD | GitHub Actions | Test → build → deploy (GitHub Pages + Worker + D1 migrations) on merge to `main`; preview builds on PRs. |
 
 ### 3.3 Data Model (D1)
 
@@ -157,8 +157,8 @@ Following the "Claude official projects" development pattern (as used in anthrop
 | Images | `<img>` with `loading="lazy"`, width/height set, WebP/AVIF in R2 | CLS-free, fast. |
 | Icons | Inline SVG (no icon-font dependency) | Matches reference's lightweight approach. |
 
-### 3.6 Decision Point: Pages vs Workers Static Assets
-Cloudflare's current guidance recommends **Workers + Static Assets** for all new projects (Pages remains fully supported). The user requirement names Pages. **Recommendation:** start with **Pages + a separate API Worker** (honors the stated requirement, simplest mental model), and note the migration path (Cloudflare publishes a Pages→Workers migration guide) if/when Pages feature development slows. Both options are documented here so the decision is reversible.
+### 3.6 Decision Point: GitHub Pages vs Cloudflare Pages
+**Decision (2026-10-08): GitHub Pages.** The frontend is a fully static SPA with no server-side rendering needs, so GitHub Pages (free, zero-config, same model as the reference repo) hosts it. The Cloudflare Worker API remains on `*.workers.dev` with CORS enabled. If a custom domain is added later, Cloudflare DNS proxying can front the GitHub Pages origin for CDN/WAF benefits. Migration to Cloudflare Pages/Workers Static Assets remains documented and reversible.
 
 ---
 
