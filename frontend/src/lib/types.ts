@@ -10,7 +10,12 @@ export interface FoodEntry {
   slug: string;
   date_month: number;
   date_day: number;
+  date_end_month?: number | null;
+  date_end_day?: number | null;
   date_type: "fixed" | "movable";
+  movable_note?: string | null;
+  recurrence?: "yearly" | "none";
+  entry_year?: number | null;
   name_pl: string;
   name_en: string;
   description_pl: string | null;
@@ -20,6 +25,7 @@ export interface FoodEntry {
   image_key: string | null;
   sources: string | null;
   verified: number;
+  source_type?: "curated" | "admin";
 }
 
 export interface FilterState {

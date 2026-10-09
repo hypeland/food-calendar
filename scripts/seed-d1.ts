@@ -12,8 +12,8 @@ const flag = args.includes("--remote") ? "--remote" : "--local";
 const raw = readFileSync(new URL("../data/food-days.json", import.meta.url), "utf-8");
 const entries = JSON.parse(raw) as Array<Record<string, unknown>>;
 
-// Build a single SQL script: wipe + insert all (idempotent re-seed)
-let sql = "DELETE FROM entries;\n";
+// Build a single SQL script: wipe curated rows only (preserve admin-added entries) + insert all
+let sql = "DELETE FROM entries WHERE source_type = 'curated' OR source_type IS NULL;\n";
 for (const e of entries) {
   const vals = [
     e.slug, e.date_month, e.date_day, e.date_type, e.name_pl, e.name_en,

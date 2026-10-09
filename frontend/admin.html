@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel administratora — Kalendarz Dni Jedzenia</title>
+  <link rel="stylesheet" href="/src/styles/tokens.css">
+  <link rel="stylesheet" href="/src/styles/base.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/styles/admin.css">
+</head>
+<body>
+  <div id="admin-root" class="admin-root">
+    <section id="login-view" class="admin-card">
+      <h1>Panel administratora</h1>
+      <p class="admin-sub">Zaloguj się, aby dodawać wydarzenia do kalendarza.</p>
+      <form id="login-form">
+        <label for="password-input">Hasło</label>
+        <input id="password-input" type="password" autocomplete="current-password" required minlength="1">
+        <button type="submit" class="admin-btn-primary">Zaloguj</button>
+        <p id="login-error" class="admin-error" hidden></p>
+      </form>
+    </section>
+
+    <section id="dashboard-view" class="admin-dashboard" hidden>
+      <header class="admin-header">
+        <h1>Panel administratora</h1>
+        <button id="logout-btn" class="admin-btn-secondary">Wyloguj</button>
+      </header>
+
+      <div class="admin-grid">
+        <form id="entry-form" class="admin-card">
+          <h2>Dodaj wydarzenie</h2>
+
+          <label for="f-name-pl">Nazwa (PL)</label>
+          <input id="f-name-pl" required maxlength="200">
+
+          <label for="f-name-en">Nazwa (EN)</label>
+          <input id="f-name-en" required maxlength="200">
+
+          <label for="f-description">Opis</label>
+          <textarea id="f-description" maxlength="500" rows="3"></textarea>
+
+          <div class="admin-row">
+            <div>
+              <label for="f-month">Miesiąc</label>
+              <select id="f-month"></select>
+            </div>
+            <div>
+              <label for="f-day">Dzień</label>
+              <input id="f-day" type="number" min="1" max="31" required>
+            </div>
+          </div>
+
+          <label class="admin-checkbox"><input type="checkbox" id="f-is-range"> Zakres dat</label>
+          <div class="admin-row" id="f-range-row" hidden>
+            <div>
+              <label for="f-end-month">Miesiąc końcowy</label>
+              <select id="f-end-month"></select>
+            </div>
+            <div>
+              <label for="f-end-day">Dzień końcowy</label>
+              <input id="f-end-day" type="number" min="1" max="31">
+            </div>
+          </div>
+
+          <label for="f-recurrence">Powtarzalność</label>
+          <select id="f-recurrence">
+            <option value="yearly">Co roku</option>
+            <option value="none">Jednorazowo</option>
+          </select>
+          <div id="f-year-row" hidden>
+            <label for="f-year">Rok</label>
+            <input id="f-year" type="number" min="1970" max="2200">
+          </div>
+
+          <label for="f-date-type">Typ daty</label>
+          <select id="f-date-type">
+            <option value="fixed">Stała</option>
+            <option value="movable">Ruchoma</option>
+          </select>
+          <div id="f-movable-row" hidden>
+            <label for="f-movable-note">Zasada (np. "2. piątek lipca")</label>
+            <input id="f-movable-note" maxlength="100">
+          </div>
+
+          <label for="f-region">Region</label>
+          <select id="f-region"></select>
+
+          <label for="f-category">Kategoria</label>
+          <select id="f-category"></select>
+
+          <label for="f-popularity">Popularność (0–100)</label>
+          <input id="f-popularity" type="number" min="0" max="100" value="50">
+
+          <button type="submit" class="admin-btn-primary">Dodaj wydarzenie</button>
+          <p id="form-error" class="admin-error" hidden></p>
+          <p id="form-success" class="admin-success" hidden>Dodano wydarzenie.</p>
+        </form>
+
+        <div class="admin-card">
+          <h2>Wydarzenia dodane przez administratora</h2>
+          <div id="admin-entries-list"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="/src/admin.ts"></script>
+</body>
+</html>

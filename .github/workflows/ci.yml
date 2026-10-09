@@ -28,6 +28,15 @@ jobs:
           npm test -- --run
           npm run build
 
+      - name: Security — verify no password/secret material leaked into built bundle
+        working-directory: frontend
+        run: |
+          if grep -rE "pbkdf2\\\$|ADMIN_PASSWORD_HASH|SESSION_SECRET" dist/; then
+            echo "ERROR: secret material found in built frontend bundle"
+            exit 1
+          fi
+          echo "OK: no secret material in dist/"
+
       - name: Worker — typecheck, test
         working-directory: worker
         run: |

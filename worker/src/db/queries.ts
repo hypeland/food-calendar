@@ -22,8 +22,9 @@ export interface BuiltQuery {
 }
 
 export function buildEntryQuery(p: EntryQueryParams): BuiltQuery {
-  const conditions: string[] = [];
-  const params: (string | number)[] = [];
+  const conditions: string[] = ["(entry_year IS NULL OR entry_year = ?)"];
+  const currentYear = new Date().getFullYear();
+  const params: (string | number)[] = [currentYear];
 
   if (p.month !== undefined && p.month !== "") {
     const m = Number(p.month);
