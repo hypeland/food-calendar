@@ -15,18 +15,17 @@ function pad(n: number): string {
 
 feedRoute.get("/", async (c) => {
   const region = c.req.query("region");
+  const year = new Date().getFullYear() + 1; // upcoming year
   let rows;
   if (region && REGIONS.has(region)) {
     rows = await c.env.DB.prepare(
-      "SELECT slug, date_month, date_day, name_pl, name_en, description_pl FROM entries WHERE region = ? ORDER BY date_month, date_day"
-    ).bind(region).all();
+      "SELECT slug, date_month, date_day, name_pl, name_en, description_pl FROM entries WHERE region = ? AND (entry_year IS NULL OR entry_year = ?) ORDER BY date_month, date_day"
+    ).bind(region, year).all();
   } else {
     rows = await c.env.DB.prepare(
-      "SELECT slug, date_month, date_day, name_pl, name_en, description_pl FROM entries ORDER BY date_month, date_day"
-    ).all();
+      "SELECT slug, date_month, date_day, name_pl, name_en, description_pl FROM entries WHERE (entry_year IS NULL OR entry_year = ?) ORDER BY date_month, date_day"
+    ).bind(year).all();
   }
-
-  const year = new Date().getFullYear() + 1; // upcoming year
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
